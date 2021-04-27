@@ -73,17 +73,17 @@ void camera(GLint uniview)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-      //  rotation -= cameraSpeed;
-       // cameraFront.x = sin(rotation);
-       // cameraFront.z = -cos(rotation);
+        //  rotation -= cameraSpeed;
+         // cameraFront.x = sin(rotation);
+         // cameraFront.z = -cos(rotation);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 
-       // rotation += cameraSpeed;
-       // cameraFront.x = sin(rotation);
-       // cameraFront.z = -cos(rotation);
+        // rotation += cameraSpeed;
+        // cameraFront.x = sin(rotation);
+        // cameraFront.z = -cos(rotation);
     }
     glm::mat4 view;
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
@@ -91,12 +91,12 @@ void camera(GLint uniview)
 
 }
 
-void ustawKamereMysz(GLint uniview,float elpsedtime, const sf::Window& window)
+void ustawKamereMysz(GLint uniview, float elpsedtime, const sf::Window& window)
 {
     sf::Vector2i localPosition = sf::Mouse::getPosition(window);
-    cout <<"x: "<< localPosition.x << " " <<"y: "<< localPosition.y << endl;
-    
-    
+    //cout << "x: " << localPosition.x << " " << "y: " << localPosition.y << endl;
+
+
 
     float xoffset = localPosition.x - lastX;
     float yoffset = localPosition.y - lastY;
@@ -121,13 +121,13 @@ void ustawKamereMysz(GLint uniview,float elpsedtime, const sf::Window& window)
     front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     cameraFront = glm::normalize(front);
 
-    
+
 }
 
 void Tekstura(unsigned int& texture, const char* nazwa)
 {
 
-        glGenTextures(1, &texture); // Generuje tekstury
+    glGenTextures(1, &texture); // Generuje tekstury
     glBindTexture(GL_TEXTURE_2D, texture); //Ustawienie tekstury jako bieżącej (powiązanie)
     // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -139,7 +139,7 @@ void Tekstura(unsigned int& texture, const char* nazwa)
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    unsigned char* data = stbi_load("metal.jpg", &width, &height, &nrChannels, 0);
+    unsigned char* data = stbi_load("crate_1.bmp", &width, &height, &nrChannels, 0);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -155,7 +155,7 @@ void Tekstura(unsigned int& texture, const char* nazwa)
 
 int main()
 {
-   
+
 
     sf::ContextSettings settings;
     settings.depthBits = 24;
@@ -175,7 +175,7 @@ int main()
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-   
+
 
 
     // GLuint punkty_=6;
@@ -183,53 +183,53 @@ int main()
      //GLfloat* vertices = new GLfloat[punkty_ * 6];
     GLuint vbo;
     glGenBuffers(1, &vbo);
-   // GLenum shape = GL_POINTS;
-    //int punkty_ = 6;
+    // GLenum shape = GL_POINTS;
+     //int punkty_ = 6;
 
 
 
 
-    /*
-    GLfloat vertices[] = {
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
--0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
--0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
--0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
-0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
-0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
--0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
--0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
--0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
--0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
--0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
--0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
--0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
--0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
-0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
--0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
-0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
--0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
--0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
--0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
-0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
--0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
--0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f
+     /*
+     GLfloat vertices[] = {
+         -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+ 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+ 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+ 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+ -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+ -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+ -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+ 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+ 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+ 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+ -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+ -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+ -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+ -0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+ -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+ -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+ 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+ 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+ 0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+ 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+ 0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+ 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+ 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+ -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+ -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+ 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+ 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+ 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+ -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+ -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f
 
-    };
-    */
+     };
+     */
 
     int punkty = 36;
     GLfloat vertices[] = {
@@ -276,7 +276,7 @@ int main()
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
     };
     /* GLfloat color[] = {
-      
+
      };
      */
 
@@ -286,10 +286,10 @@ int main()
      // glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
 
 
-      glBindBuffer(GL_ARRAY_BUFFER, vbo);
-      glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*punkty*8, vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * punkty * 8, vertices, GL_STATIC_DRAW);
 
-       // Utworzenie i skompilowanie shadera wierzchołków
+    // Utworzenie i skompilowanie shadera wierzchołków
     GLuint vertexShader =
         glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -306,7 +306,7 @@ int main()
 
         glGetProgramInfoLog(vertexShader, 512, NULL, buffer);
         std::cout << "Compilation vertexShader error: ";
-            cout<<buffer << endl;
+        cout << buffer << endl;
 
     }
     else
@@ -336,7 +336,7 @@ int main()
         std::cout << buffer << std::endl;
 
 
-       
+
     }
     else
     {
@@ -355,10 +355,10 @@ int main()
     // Specifikacja formatu danych wierzchołkowych
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
     GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
     glEnableVertexAttribArray(colAttrib);
-    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
     //sf::Event event;
 
     GLint TexCoord = glGetAttribLocation(shaderProgram, "aTexCoord");
@@ -400,12 +400,12 @@ int main()
     GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
-   
+
 
 
     glEnable(GL_DEPTH_TEST);
 
-    sf::Clock clock=sf::Clock::Clock();
+    sf::Clock clock = sf::Clock::Clock();
     sf::Time time;
     sf::Time currentTime;
 
@@ -416,6 +416,9 @@ int main()
     Tekstura(texture1, "crate.bmp");
     unsigned int texture2;
     Tekstura(texture2, "metal.bmp");
+
+    //glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
+   // glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1);
 
     while (running) {
         sf::Event windowEvent;
@@ -436,11 +439,11 @@ int main()
 
                 }
             case sf::Event::MouseMoved:
-                
+
                 time = clock.getElapsedTime();
-                    clock.restart();
-                    ustawKamereMysz(uniView, time.asMicroseconds(), window);
-              
+                clock.restart();
+                ustawKamereMysz(uniView, time.asMicroseconds(), window);
+
                 break;
                 /*
             case sf::Event::MouseMoved:
@@ -458,24 +461,28 @@ int main()
             }
         }
         float fps;
-       
+
         fps = 1.0f / (time.asSeconds());
         string FPS = to_string(fps);
         window.setTitle("FPS: " + FPS);
-       // cout << "FPS = " << floor(fps) << endl;
-       // time = currentTime;
+        // cout << "FPS = " << floor(fps) << endl;
+        // time = currentTime;
 
         camera(uniView);
-        
+
 
         // Nadanie scenie koloru czarnego
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
 
-        glBindTexture(GL_TEXTURE_2D, texture1);
+       // glBindTexture(GL_TEXTURE_2D, texture1);
         // Rysowanie figur za pomocą trojkątów
-       // glDrawArrays(GL_TRIANGLES, 0, 12*3);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        glDrawArrays(GL_TRIANGLES, 0, 18);
+        glBindTexture(GL_TEXTURE_2D, texture2);
+        glDrawArrays(GL_TRIANGLES, 18, 36);
         // Wymiana buforów tylni/przedni
         window.setFramerateLimit(60);
         window.display();
